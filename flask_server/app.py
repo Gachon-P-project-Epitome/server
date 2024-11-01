@@ -38,12 +38,5 @@ def process_music():
     # Spring으로 결과 반환
     return jsonify(results), 200
 
-@app.route('/', methods=['GET'])
-def home():
-    hi={
-        'id':1,
-        'title':'책'
-    }
-    return jsonify(hi),200
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
