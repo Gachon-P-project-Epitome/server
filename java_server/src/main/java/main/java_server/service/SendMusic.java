@@ -1,6 +1,6 @@
 package main.java_server.service;
 
-import main.java_server.Dto.results;
+import main.java_server.Dto.Results;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +22,7 @@ public class SendMusic {
         this.restTemplate = restTemplate;
     }
 
-    public ResponseEntity<results> sendToFlask(File file){
+    public ResponseEntity<Results> sendToFlask(File file){
         FileSystemResource fileResource = new FileSystemResource(file);
         // 파일을 Multipart 요청으로 설정
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
@@ -32,7 +32,7 @@ public class SendMusic {
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         // 헤더와 본문 결합
         HttpEntity<MultiValueMap<String,Object>> requestEntity = new HttpEntity<>(body, headers);
-        ResponseEntity<results> responseEntity = restTemplate.postForEntity(flaskUrl, requestEntity, results.class);
+        ResponseEntity<Results> responseEntity = restTemplate.postForEntity(flaskUrl, requestEntity, Results.class);
         return responseEntity;
     }
 

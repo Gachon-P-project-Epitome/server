@@ -1,6 +1,6 @@
 package main.java_server.controller;
 
-import main.java_server.Dto.results;
+import main.java_server.Dto.Results;
 import main.java_server.service.SendMusic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,13 +33,13 @@ public class MainController {
         File tempFile = File.createTempFile("music_", ".mp3");
         file.transferTo(tempFile); // MultipartFile을 임시 파일로 전송
 
-        ResponseEntity<results> response = sendMusic.sendToFlask(tempFile);
+        ResponseEntity<Results> response = sendMusic.sendToFlask(tempFile);
 
         tempFile.delete();
 
 
         if (response.getStatusCode().is2xxSuccessful()) {
-            results result = response.getBody();
+            Results result = response.getBody();
 
             if (result != null) {
                 return ResponseEntity.ok(result);
