@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class MusicTrack {
+    private String trackId;
     private String name;
     private String artist;
     private String album;
