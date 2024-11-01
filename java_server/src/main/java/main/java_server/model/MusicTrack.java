@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class MusicTrack {
     private String trackId;
     private String name;
