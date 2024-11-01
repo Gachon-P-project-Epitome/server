@@ -6,11 +6,11 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class results {
+public class Results {
     @JsonProperty("original_file_id")
     private String originalFileId;
     @JsonProperty("similarity_score")
     private double similarityScore;
     @JsonProperty("similar_tracks")
-    private List<semiTrack> similarTracks;
+    private List<SemiTrack> similarTracks;
 }
