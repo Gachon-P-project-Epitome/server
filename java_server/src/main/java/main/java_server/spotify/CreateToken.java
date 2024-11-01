@@ -14,10 +14,10 @@ import java.io.IOException;
 
 @Service
 public class CreateToken {
-    @Value("$spotify.clientId")
+    @Value("${spotify.clientId}")
     private String clientId;
 
-    @Value("$spotify.clientSecret")
+    @Value("${spotify.clientSecret}")
     private String clientSecret;
 
     private SpotifyApi spotifyApi;
