@@ -1,6 +1,6 @@
 package main.java_server.service;
 
-import main.java_server.Dto.Results;
+import main.java_server.dto.Results;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
