@@ -17,12 +17,13 @@ import java.io.File;
 public class SendMusic {
 
     private final RestTemplate restTemplate;
-    String flaskUrl = "http://localhost:5001/process_music";
+    String flaskUrl = "http://flask:5001/process_music";
+
     public SendMusic(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public ResponseEntity<Results> sendToFlask(File file){
+    public ResponseEntity<Results> sendToFlask(File file) {
         FileSystemResource fileResource = new FileSystemResource(file);
         // 파일을 Multipart 요청으로 설정
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
@@ -31,10 +32,9 @@ public class SendMusic {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         // 헤더와 본문 결합
-        HttpEntity<MultiValueMap<String,Object>> requestEntity = new HttpEntity<>(body, headers);
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
         ResponseEntity<Results> responseEntity = restTemplate.postForEntity(flaskUrl, requestEntity, Results.class);
         return responseEntity;
     }
-
 
 }

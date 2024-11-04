@@ -1,9 +1,7 @@
 package main.java_server.model;
 
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Data
 @NoArgsConstructor
