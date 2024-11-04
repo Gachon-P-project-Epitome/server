@@ -1,7 +1,7 @@
 package main.java_server.controller;
 
-import main.java_server.Dto.Results;
-import main.java_server.Dto.SemiTrack;
+import main.java_server.dto.Results;
+import main.java_server.dto.SemiTrack;
 import main.java_server.model.MusicTrack;
 import main.java_server.service.FindTrackService;
 import main.java_server.service.SendMusic;
