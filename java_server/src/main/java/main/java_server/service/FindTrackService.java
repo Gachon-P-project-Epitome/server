@@ -52,7 +52,8 @@ public class FindTrackService {
                     musicTrack.setArtist(track.getArtists().length > 0 ? track.getArtists()[0].getName() : "Unknown Artist");
                     musicTrack.setAlbum(track.getAlbum().getName());
                     musicTrack.setAlbumImageUrl(track.getAlbum().getImages()[0].getUrl());
-                    musicTrack.setPreviewUrl(track.getPreviewUrl());
+                    String previewUrl = "/music/"+track.getId()+".mp3";
+                    musicTrack.setPreviewUrl(previewUrl);
                     musicTrack.setSimilarity(0.0); // 초기 유사도 값 설정
 
                     // 리스트에 추가
