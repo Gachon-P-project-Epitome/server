@@ -1,5 +1,5 @@
 # 1. Python 3.9 이상의 이미지 사용
-FROM python:3.9-slim
+FROM python:3.10-slim
 
 # 2. 작업 디렉토리 설정
 WORKDIR /app
@@ -7,6 +7,8 @@ WORKDIR /app
 # 3. 필요한 패키지 설치 (예: gcc 설치는 일부 라이브러리에 필요할 수 있습니다)
 RUN apt-get update && apt-get install -y \
     gcc \
+    libsndfile1 \
+    ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 # 4. 필요한 Python 패키지 복사 및 설치

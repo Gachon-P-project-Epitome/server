@@ -6,7 +6,7 @@ services:
       context: ./java_server
       dockerfile: Dockerfile
     ports:
-      - '8085:8080'
+      - '8080:8080'
     restart: always
     networks:
       - epitome

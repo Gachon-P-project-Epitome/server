@@ -1,8 +1,14 @@
 from flask import Flask, request, jsonify
+import os
+import sys
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(current_dir)
+# sys.path.append("/Users/habeomsu/epitome/flask_server")
 from models.similarity_model import compute_similarity
-from models.genre_classification_model import classify_genre
+from models.genre_classification_model import classify_genres
 from utils.audio_processing import process_audio
 from flask_cors import CORS
+
 
 app = Flask(__name__)
 CORS(app)
@@ -15,11 +21,14 @@ def process_music():
     
     file = request.files['file']
     
+    
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
     
     # 오디오 파일 처리 및 장르 분류
-    genre = classify_genre(file)  # 파일 경로가 아닌 파일 객체를 직접 전달
+    genre1 = classify_genres(file)
+    print(genre1)
+    genre = 'Pop' # 파일 경로가 아닌 파일 객체를 직접 전달
 
     # 유사도 계산
     similarity_score, similar_tracks = compute_similarity(file, genre)  # 파일 객체를 전달
