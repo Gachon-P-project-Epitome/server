@@ -1,5 +1,6 @@
 package main.java_server.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import main.java_server.dto.Results;
 import main.java_server.dto.SemiTrack;
 import main.java_server.model.MusicTrack;
@@ -12,12 +13,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Controller
 @CrossOrigin("*")
 public class MainController {
@@ -38,9 +45,11 @@ public class MainController {
 
     @PostMapping("/upload")
     public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) throws IOException {
+        
 
         File tempFile = File.createTempFile("music_", ".mp3");
         file.transferTo(tempFile); // MultipartFile을 임시 파일로 전송
+
 
         ResponseEntity<Results> response = sendMusic.sendToFlask(tempFile);
 
@@ -71,6 +80,7 @@ public class MainController {
                 if (similarity != null) {
                     track.setSimilarity(similarity); // 유사도 값을 설정
                 }
+                track.setGenre(result.getGenre());
             }
 
             return ResponseEntity.ok(tracks);

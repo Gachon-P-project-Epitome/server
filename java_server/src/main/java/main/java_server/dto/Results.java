@@ -11,8 +11,8 @@ import java.util.List;
 public class Results {
     @JsonProperty("original_file_id")
     private String originalFileId;
-    @JsonProperty("similarity_score")
-    private double similarityScore;
+    @JsonProperty("genre")
+    private String genre;
     @JsonProperty("similar_tracks")
     private List<SemiTrack> similarTracks;
 }

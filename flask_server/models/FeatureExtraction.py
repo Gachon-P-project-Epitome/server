@@ -2,7 +2,7 @@ from PIL import Image
 import numpy as np
 import librosa
 import os
-from models.test1 import *
+from models.Preprocessing import *
 import sys
 
 
@@ -52,5 +52,9 @@ class FeatureExtracion:
         data[:, 0:self.parameter_number]= -S_dB.T[0:self.ltime_series, :]
         data_max = np.max(data)
         img = Image.fromarray(np.uint8((data / data_max) * 255), 'L')
+        # file_name='upload.png'
+        # save_path = os.path.join("/Users/habeomsu/epitome/flask_server/models/music", file_name)
+        # # save_path = os.path.join("/app/models/music", file_name)
+        # img.save(save_path)
     
         return img

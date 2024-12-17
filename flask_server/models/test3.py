@@ -3,8 +3,8 @@ import os
 import matplotlib.pyplot as plt
 import sys 
 # sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-from models.test1 import Preprocessing
-from models.test2 import FeatureExtracion
+from models.Preprocessing import Preprocessing
+from models.FeatureExtraction import FeatureExtracion
 import tensorflow as tf
 from tensorflow.keras.applications import DenseNet121
 from tensorflow.keras.models import Model 
@@ -83,7 +83,7 @@ class MusicGenrePredictor:
         # Step 2: Feature Extraction (PCM to Mel Spectrogram Image)
         feature_extraction = FeatureExtracion()
         img = feature_extraction.mel_spectrogram(pcm_path)
-
+        
         os.remove(wav_path)
         os.remove(pcm_path)
         

@@ -55,6 +55,7 @@ public class FindTrackService {
                     String previewUrl = "/music/"+track.getId()+".mp3";
                     musicTrack.setPreviewUrl(previewUrl);
                     musicTrack.setSimilarity(0.0); // 초기 유사도 값 설정
+                    musicTrack.setGenre("");
 
                     // 리스트에 추가
                     validTracks.add(musicTrack);

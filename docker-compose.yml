@@ -22,6 +22,7 @@ services:
     restart: always
     networks:
       - epitome
-
+    volumes:
+      - ./vector:/app/models/vector
 networks:
   epitome:
