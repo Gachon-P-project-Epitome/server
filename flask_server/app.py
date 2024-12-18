@@ -29,16 +29,6 @@ def process_music():
         return jsonify({'error': 'No selected file'}), 400
     
     
-    # genre1 = classify_genres2(file)
-    # print(genre1)
-
-    # 오디오 파일 처리 및 장르 분류
-    # genre1 = classify_genres(file)
-    # print(genre1)
-    # genre = 'Pop' # 파일 경로가 아닌 파일 객체를 직접 전달
-
-    # # 유사도 계산
-    # similarity_score, similar_tracks = compute_similarity(file, genre)  # 파일 객체를 전달
 
     genre, similar_tracks = final_test(file)
     # 결과 구성

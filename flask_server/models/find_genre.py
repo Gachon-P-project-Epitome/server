@@ -4,9 +4,7 @@ import os
 from models.Preprocessing import Preprocessing
 from models.FeatureExtraction import FeatureExtracion
 
-# base_dir = os.path.dirname(os.path.abspath(__file__))
-# mp3_file_path1 = os.path.join(base_dir, 'models', 'music', 'upload.mp3')
-# weights_file_path1 = os.path.join(base_dir, 'models', 'epoch_070_weights.h5')
+
 
 def classify_genres2(file):
     mp3_data = file.read()  # BytesIO 객체에서 MP3 데이터 읽기
