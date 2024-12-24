@@ -2,7 +2,7 @@ from io import BytesIO
 import os
 from models.Preprocessing import Preprocessing
 from models.FeatureExtraction import FeatureExtracion
-from models.test import CosineSimilaritys
+from models.Similarity import CosineSimilaritys
 
 
 def final_test(file):

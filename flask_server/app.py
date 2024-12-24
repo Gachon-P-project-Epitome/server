@@ -6,7 +6,7 @@ sys.path.append(current_dir)
 # sys.path.append("/Users/habeomsu/epitome/flask_server")
 from models.similarity_model import compute_similarity
 from models.genre_classification_model import classify_genres
-from models.final import final_test
+from models.GetTracks import final_test
 from utils.audio_processing import process_audio
 from flask_cors import CORS
 from models.find_genre import classify_genres2
