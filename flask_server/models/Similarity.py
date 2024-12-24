@@ -7,19 +7,17 @@ from .GenrePredictor import GenrePredictor
 
 
 from io import BytesIO
-import os
-from models.Preprocessing import Preprocessing
 from models.FeatureExtraction import FeatureExtracion
 
 class CosineSimilaritys:
-    def __init__(self, img_path, weights_file_path, vector_dir_path):
-        self.img_path = img_path
+    def __init__(self, img, weights_file_path, vector_dir_path):
+        self.img = img
         self.weights_file_path = weights_file_path
         self.vector_dir_path = vector_dir_path
         self.genre_predictor = self.initialize_genre_predictor()
 
     def initialize_genre_predictor(self):
-        return GenrePredictor(self.img_path, self.weights_file_path, self.vector_dir_path)
+        return GenrePredictor(self.img, self.weights_file_path, self.vector_dir_path)
 
     def extract_features(self, intermediate_layer_names):
         all_features = self.genre_predictor.extract_features(intermediate_layer_names)
@@ -54,14 +52,14 @@ class CosineSimilaritys:
                 print(f"Highest cosine similarity value: {similarity}")
             
             def remove_genre(track_name):
-                name_class = ["Electronic", "Experimental", "Folk", "Hip_Hop", "Instrumental", "International", "Pop", "Rock"]
+                name_class = ["Electronic", "Experimental", "Folk", "HipPop", "Instrumental", "International", "Pop", "Rock"]
             # name_class에 있는 모든 장르를 제거
                 for genre in name_class:
                     track_name = track_name.replace(genre, '')
                 return track_name.replace('.png', '').strip()  # .png도 제거하고 공백도 제거
             
             def genre_output(track_name):
-                name_class = ["Electronic", "Experimental", "Folk", "Hip_Hop", "Instrumental", "International", "Pop", "Rock"]
+                name_class = ["Electronic", "Experimental", "Folk", "HipPop", "Instrumental", "International", "Pop", "Rock"]
                 for genre in name_class:
                     if genre in track_name:
                         return genre  # 장르가 존재할 경우 해당 장르를 반환
@@ -73,6 +71,10 @@ class CosineSimilaritys:
             # 유사한 트랙 구성
             genre=genre_output(name[0])
             print(genre)
+
+            # 장르가 "HipPop"일 경우 "Hip_Hop"으로 변경
+            if genre == "HipPop":
+                genre = "Hip_Hop"
            
             similar_tracks = [
                 {

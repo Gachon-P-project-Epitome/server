@@ -2,7 +2,6 @@ from PIL import Image
 import numpy as np
 import librosa
 import os
-from models.Preprocessing import *
 import sys
 
 
@@ -24,14 +23,14 @@ class FeatureExtracion:
         self.frequency_max = self.fs // 2
         
     def mel_spectrogram(self, pcm_data):
-        # PCM 데이터를 바로 처리
-        with open(pcm_data, 'rb') as pcm_file:
-            pcm_file.seek(0)  # PCM 데이터 스트림의 시작으로 이동
-            y, sr = librosa.load(pcm_file, sr=self.fs, mono=True)
-        
+        # PCM 데이터가 numpy 배열 형식이어야 함
+        if isinstance(pcm_data, np.ndarray):
+            y = pcm_data
+        else:
+            raise ValueError("pcm_data must be a numpy array.")
         # Init array containing data for image
         data = np.zeros((self.ltime_series, self.parameter_number), dtype=np.float32)
-        duration = librosa.get_duration(y=y, sr=sr)  # 오디오 길이 계산
+        duration = librosa.get_duration(y=y, sr=self.fs)  # 오디오 길이 계산
         
         if duration < 29.35:
             return None  
@@ -57,5 +56,6 @@ class FeatureExtracion:
         data_max = np.max(data)
         img = Image.fromarray(np.uint8((data / data_max) * 255), 'L')
     
+
     
         return img

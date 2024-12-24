@@ -4,12 +4,11 @@ import sys
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
 # sys.path.append("/Users/habeomsu/epitome/flask_server")
-from models.similarity_model import compute_similarity
-from models.genre_classification_model import classify_genres
-from models.GetTracks import final_test
-from utils.audio_processing import process_audio
+from models.GetTracks import get_tracks
+
 from flask_cors import CORS
-from models.find_genre import classify_genres2
+
+
 
 
 
@@ -28,9 +27,9 @@ def process_music():
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
     
-    
 
-    genre, similar_tracks = final_test(file)
+    genre, similar_tracks = get_tracks(file)
+
     # 결과 구성
     results = {
         'original_file_id': file.filename,  # 실제 파일 ID를 사용할 수 있음
