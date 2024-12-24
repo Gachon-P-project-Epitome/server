@@ -17,7 +17,7 @@ import java.io.File;
 public class SendMusic {
 
     private final RestTemplate restTemplate;
-    String flaskUrl = "http://flask:5001/process_music";
+    String flaskUrl = "http://localhost:5008/process_music";
 
     public SendMusic(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;

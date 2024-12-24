@@ -1,9 +1,10 @@
 import numpy as np
 import pandas as pd
+from PIL import Image
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-from models.Preprocessing import Preprocessing
+from models.Processing import Preprocessing
 from models.FeatureExtraction import FeatureExtracion
 from tensorflow.keras.applications import DenseNet121
 from tensorflow.keras.models import Model
@@ -15,8 +16,8 @@ from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
 
 class GenrePredictor:
-    def __init__(self, img_path, weights_file_path, vector_dir_path):
-        self.img_path = img_path
+    def __init__(self, img, weights_file_path, vector_dir_path):
+        self.img = img
         self.weights_file_path = weights_file_path
         self.vector_dir_path = vector_dir_path
         self.model = self.create_model()
@@ -39,8 +40,8 @@ class GenrePredictor:
         return model_dense_121
     
     def process_image(self):
-        img = load_img(self.img_path, target_size=(224, 224))  
-        img_array = img_to_array(img)  
+        img = self.img.resize((224, 224), Image.LANCZOS).convert('RGB')  # RGB로 변환
+        img_array = img_to_array(img)  # PIL 이미지를 NumPy 배열로 변환
         img_array = np.expand_dims(img_array, axis=0)  
         img_array = img_array / 255.0  
         return img_array
