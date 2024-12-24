@@ -35,6 +35,10 @@ class FeatureExtracion:
         
         if duration < 29.35:
             return None  
+    
+        # 30초 이상인 경우 30초 이후의 데이터를 잘라냄
+        if duration > 30:
+            y = y[:int(self.fs * 30)]  # 30초 이후의 데이터 잘라내기
         
         # Nothing change -------------------------------------------------------
         S = librosa.feature.melspectrogram(y=y, sr=self.fs,
