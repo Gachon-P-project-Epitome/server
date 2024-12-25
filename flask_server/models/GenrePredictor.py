@@ -88,37 +88,30 @@ class GenrePredictor:
         img_array = self.process_image()
         result = self.model.predict(img_array)
         y_pred_res = self.get_y_pred(result)
-        y_pred = np.where(y_pred_res == 1)[1]  
-        predicted_genre = self.name_class[y_pred[0]]  
-        print(f"Predicted genre: {predicted_genre}")
 
-       
-        # 예측된 장르에 맞는 NPZ 파일 경로를 찾고, 로드된 피처를 반환합니다.
-        if predicted_genre == "Electronic":
-            npz_file_path = os.path.join(self.vector_dir_path, "Electronic.npz")
-        elif predicted_genre == "Experimental":
-            npz_file_path = os.path.join(self.vector_dir_path, "Experimental.npz")
-        elif predicted_genre == "Folk":
-            npz_file_path = os.path.join(self.vector_dir_path, "Folk.npz")
-        elif predicted_genre == "Hip_Hop":
-            npz_file_path = os.path.join(self.vector_dir_path, "Hip_Hop.npz")
-        elif predicted_genre == "Instrumental":
-            npz_file_path = os.path.join(self.vector_dir_path, "Instrumental.npz")
-        elif predicted_genre == "International":
-            npz_file_path = os.path.join(self.vector_dir_path, "International.npz")
-        elif predicted_genre == "Pop":
-            npz_file_path = os.path.join(self.vector_dir_path, "Pop.npz")
-        elif predicted_genre == "Rock":
-            npz_file_path = os.path.join(self.vector_dir_path, "Rock.npz")
-        else:
-            print(f"Unknown genre: {predicted_genre}")
-            return None
+        # 예측 확률에 따라 상위 2개의 장르 인덱스 선택
+        top_indices = np.argsort(y_pred_res[0])[::-1][:2]  # 확률이 높은 두 개의 인덱스
+        predicted_genres = [self.name_class[i] for i in top_indices]  # 인덱스를 장르로 변환
 
-        if os.path.exists(npz_file_path):
-            npz_data = np.load(npz_file_path, allow_pickle=True)
-            print(f"Loaded {npz_file_path} successfully")
-            # return npz_data['features']  # 피처만 반환
-            return npz_data['features'],npz_data['file_names']  # 피처 + 이름 반환
+        print(f"Predicted genres: {predicted_genres}")
+
+        
+        features = []
+        file_names = []
+
+        for predicted_genre in predicted_genres:
+            npz_file_path = os.path.join(self.vector_dir_path, f"{predicted_genre}.npz")
+            
+            if os.path.exists(npz_file_path):
+                npz_data = np.load(npz_file_path, allow_pickle=True)
+                print(f"Loaded {npz_file_path} successfully")
+                features.append(npz_data['features'])
+                file_names.append(npz_data['file_names'])
+            else:
+                print(f"NPZ file for predicted genre '{predicted_genre}' not found.")
+
+        if features and file_names:
+            return features, file_names  # 피처 + 이름 반환
         else:
-            print(f"NPZ file for predicted genre '{predicted_genre}' not found.")
             return None
+        
