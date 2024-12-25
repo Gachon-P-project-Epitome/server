@@ -13,6 +13,18 @@ RUN apt-get update && apt-get install -y \
 
 # 4. 필요한 Python 패키지 복사 및 설치
 COPY requirements.txt /app/requirements.txt
+
+# 5. requirements.txt 파일 수정
+RUN sed -i 's/tensorboard==2.18.0/tensorboard==2.15.0/' /app/requirements.txt  # tensorboard 버전 변경
+RUN sed -i 's/tensorflow==2.18.0/tensorflow==2.15.0/' /app/requirements.txt
+RUN sed -i 's/ml-dtypes==0.4.1/ml-dtypes==0.2.0/' /app/requirements.txt  # ml-dtypes 버전 변경
+RUN sed -i 's/wrapt==1.17.0/wrapt<1.15/' /app/requirements.txt  # wrapt 버전 변경
+RUN sed -i 's/protobuf==5.29.1/protobuf>=3.19.6,<4.24/' /app/requirements.txt  # protobuf 버전 변경
+RUN sed -i 's/keras==3.7.0/keras==2.15.0/' /app/requirements.txt  # keras 버전 변경
+RUN sed -i 's/numpy==2.0.2/numpy==1.23.5/' /app/requirements.txt  # numpy 버전 변경
+
+
+
 RUN pip install -r requirements.txt
 
 # 5. Flask 애플리케이션 코드 복사

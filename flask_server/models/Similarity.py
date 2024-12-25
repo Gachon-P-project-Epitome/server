@@ -26,68 +26,77 @@ class CosineSimilaritys:
         return all_features
 
     def predict_genre_and_calculate_similarity(self, all_features):
-        predicted_genre_data,name = self.genre_predictor.predict_genre()
+        predicted_genre_data, names = self.genre_predictor.predict_genre()
 
         if predicted_genre_data is not None:
-            print("Shape of the extracted vector from the NPZ file:")
-            print(predicted_genre_data.shape)
+            print("Shapes of the extracted vectors from the NPZ files:")
+            for data in predicted_genre_data:
+                print(data.shape)  # 각 NPZ 벡터의 shape 출력
 
-            cosine_similarities = cosine_similarity(all_features, predicted_genre_data)
+            # 첫 번째 NPZ 벡터와 두 번째 NPZ 벡터에 대해 코사인 유사도 계산
+            cosine_similarities_1 = cosine_similarity(all_features, predicted_genre_data[0])
+            cosine_similarities_2 = cosine_similarity(all_features, predicted_genre_data[1])
 
-            print("Cosine Similarities between the image vector and the predicted genre vectors:")
-            print(cosine_similarities.shape)
-            
-        
-
-            # 상위 5개 유사도 인덱스와 값을 가져오기
+                # 상위 5개 유사도 인덱스와 값을 가져오기
             top_n = 5
-            top_indices = np.argsort(cosine_similarities[0])[::-1][:top_n]  # 유사도 배열을 내림차순으로 정렬하고 상위 N개 선택
+            top_results = []
 
-            # 인덱스와 유사도 값을 출력
-            for i in range(top_n):
-                index = top_indices[i]  # predicted_genre_data에서의 인덱스
-                similarity = cosine_similarities[0][index]  # 해당 인덱스의 유사도 값
-                print(f"Most similar vector index: {index}")  # predicted_genre_data의 인덱스
-                print(f"Most similar vector name: {name[index]}")  # names에서 해당 인덱스의 이름
-                print(f"Highest cosine similarity value: {similarity}")
-            
-            def remove_genre(track_name):
-                name_class = ["Electronic", "Experimental", "Folk", "HipPop", "Instrumental", "International", "Pop", "Rock"]
-            # name_class에 있는 모든 장르를 제거
-                for genre in name_class:
-                    track_name = track_name.replace(genre, '')
-                return track_name.replace('.png', '').strip()  # .png도 제거하고 공백도 제거
-            
-            def genre_output(track_name):
-                name_class = ["Electronic", "Experimental", "Folk", "HipPop", "Instrumental", "International", "Pop", "Rock"]
-                for genre in name_class:
-                    if genre in track_name:
-                        return genre  # 장르가 존재할 경우 해당 장르를 반환
-                return None
+            for i, cosine_similarities in enumerate([cosine_similarities_1, cosine_similarities_2]):
+                top_indices = np.argsort(cosine_similarities[0])[::-1][:top_n]  # 유사도 배열을 내림차순으로 정렬하고 상위 N개 선택
+                
+                # 인덱스와 유사도 값을 출력
+                for index in top_indices:
+                    similarity = cosine_similarities[0][index]  # 해당 인덱스의 유사도 값
+                    print(f"Most similar vector index for NPZ vector {i + 1}: {index}")  # predicted_genre_data의 인덱스
+                    print(f"Most similar vector name: {names[i][index]}")  # names에서 해당 인덱스의 이름
+                    print(f"Highest cosine similarity value: {similarity}")
+                    
+                    genre = self.genre_output(names[i][index])  # 장르 추출
+                    # 결과 저장
+                    top_results.append({
+                        'genre': genre,  # 장르 추가
+                        'genre_index': i + 1,
+                        'id': self.remove_genre(names[i][index]),  # 실제 데이터 구조에 맞게 수정
+                        'similarity': float(similarity)
+                    })
 
+            # 가장 높은 유사도를 가진 항목 선택
+            if top_results:
+                # 유사도 값 기준으로 내림차순 정렬
+                top_results.sort(key=lambda x: x['similarity'], reverse=True)
 
+               
+                genre = top_results[0]['genre']  # 해당 ID에서 장르 추출
+                print(f"Detected genre: {genre}")
 
+                # "HipPop" 변경
+                if genre == "HipPop":
+                    genre = "Hip_Hop"
 
-            # 유사한 트랙 구성
-            genre=genre_output(name[0])
-            print(genre)
-
-            # 장르가 "HipPop"일 경우 "Hip_Hop"으로 변경
-            if genre == "HipPop":
-                genre = "Hip_Hop"
-           
-            similar_tracks = [
-                {
-                    'id': remove_genre(name[index]),  # 실제 데이터 구조에 맞게 수정
-                    'similarity': float(cosine_similarities[0][index])
-                } for index in top_indices
-            ]
-            print(genre,similar_tracks)
-            return genre,similar_tracks
+                # 상위 유사한 트랙 구성
+                similar_tracks = [
+                    {
+                        'id': entry['id'],  # 실제 데이터 구조에 맞게 수정
+                        'similarity': entry['similarity']
+                    } for entry in top_results  # 상위 5개 유사한 트랙
+                ]
+                return genre, similar_tracks  # 장르와 유사한 트랙 반환
 
         else:
             print("No NPZ data extracted.")
-    
-    
+            return None, None  # 장르와 트랙 정보 모두 None 반환
 
 
+    def remove_genre(self, track_name):
+        name_class = ["Electronic", "Experimental", "Folk", "HipPop", "Instrumental", "International", "Pop", "Rock"]
+        # name_class에 있는 모든 장르를 제거
+        for genre in name_class:
+            track_name = track_name.replace(genre, '')
+        return track_name.replace('.png', '').strip()  # .png도 제거하고 공백도 제거
+
+    def genre_output(self, track_name):
+        name_class = ["Electronic", "Experimental", "Folk", "HipPop", "Instrumental", "International", "Pop", "Rock"]
+        for genre in name_class:
+            if genre in track_name:
+                return genre  # 장르가 존재할 경우 해당 장르를 반환
+        return None
