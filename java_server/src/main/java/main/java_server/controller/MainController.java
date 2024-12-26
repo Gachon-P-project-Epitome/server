@@ -81,7 +81,7 @@ public class MainController {
             for (MusicTrack track : tracks) {
                 Double similarity = similarityMap.get(track.getTrackId());
                 String genre = genreMap.get(track.getTrackId());
-                if (similarity != null && genre != null) {
+                if (true) {
                     track.setSimilarity(similarity); // 유사도 값을 설정
                     track.setGenre(genre);
                 }
