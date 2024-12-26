@@ -28,16 +28,16 @@ def process_music():
         return jsonify({'error': 'No selected file'}), 400
     
 
-    genre, similar_tracks = get_tracks(file)
+    similar_tracks = get_tracks(file)
 
     # 결과 구성
     results = {
         'original_file_id': file.filename,  # 실제 파일 ID를 사용할 수 있음
-        'genre': genre,
         'similar_tracks': [
             {
                 'track_id': track['id'],
                 'similarity': track['similarity'],
+                'genre': track['genre'],
             } for track in similar_tracks
         ]
     }

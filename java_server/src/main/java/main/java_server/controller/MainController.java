@@ -67,9 +67,12 @@ public class MainController {
             String[] trackIds = new String[similarTracks.size()];
 
             Map<String, Double> similarityMap = new HashMap<>();
+            Map<String, String> genreMap = new HashMap<>();
+
             for (SemiTrack semiTrack : similarTracks) {
                 trackIds[similarTracks.indexOf(semiTrack)] = semiTrack.getTrackId();
                 similarityMap.put(semiTrack.getTrackId(), semiTrack.getSimilarity());
+                genreMap.put(semiTrack.getTrackId(), semiTrack.getGenre());
             }
 
             List<MusicTrack> tracks = findTrackService.search(trackIds);
@@ -77,10 +80,12 @@ public class MainController {
             // ID에 따라 유사도 값을 설정
             for (MusicTrack track : tracks) {
                 Double similarity = similarityMap.get(track.getTrackId());
-                if (similarity != null) {
+                String genre = genreMap.get(track.getTrackId());
+                if (similarity != null && genre != null) {
                     track.setSimilarity(similarity); // 유사도 값을 설정
+                    track.setGenre(genre);
                 }
-                track.setGenre(result.getGenre());
+
             }
 
             return ResponseEntity.ok(tracks);

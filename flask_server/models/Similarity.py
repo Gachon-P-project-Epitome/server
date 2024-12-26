@@ -52,6 +52,11 @@ class CosineSimilaritys:
                     print(f"Highest cosine similarity value: {similarity}")
                     
                     genre = self.genre_output(names[i][index])  # 장르 추출
+
+                    # "HipPop" 변경
+                    if genre == "HipPop":
+                        genre = "Hip_Hop"
+
                     # 결과 저장
                     top_results.append({
                         'genre': genre,  # 장르 추가
@@ -62,25 +67,17 @@ class CosineSimilaritys:
 
             # 가장 높은 유사도를 가진 항목 선택
             if top_results:
-                # 유사도 값 기준으로 내림차순 정렬
-                top_results.sort(key=lambda x: x['similarity'], reverse=True)
-
-               
-                genre = top_results[0]['genre']  # 해당 ID에서 장르 추출
-                print(f"Detected genre: {genre}")
-
-                # "HipPop" 변경
-                if genre == "HipPop":
-                    genre = "Hip_Hop"
+                
 
                 # 상위 유사한 트랙 구성
                 similar_tracks = [
                     {
                         'id': entry['id'],  # 실제 데이터 구조에 맞게 수정
-                        'similarity': entry['similarity']
+                        'similarity': entry['similarity'],
+                        'genre': entry['genre']
                     } for entry in top_results  # 상위 5개 유사한 트랙
                 ]
-                return genre, similar_tracks  # 장르와 유사한 트랙 반환
+                return similar_tracks  # 장르와 유사한 트랙 반환
 
         else:
             print("No NPZ data extracted.")

@@ -11,4 +11,6 @@ public class SemiTrack {
     private String trackId;
 
     private double similarity;
+    private String genre;
+
 }

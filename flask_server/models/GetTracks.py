@@ -33,11 +33,11 @@ def get_tracks(file):
 
     pipeline = CosineSimilaritys(img, weights_file_path, vector_dir_path)
     all_features = pipeline.extract_features(intermediate_layer_names)
-    genre,similar_tracks=pipeline.predict_genre_and_calculate_similarity(all_features)
+    similar_tracks=pipeline.predict_genre_and_calculate_similarity(all_features)
 
     
     # 결과 반환
-    return genre,similar_tracks
+    return  similar_tracks
 
     
 
