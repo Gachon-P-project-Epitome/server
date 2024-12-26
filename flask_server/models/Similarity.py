@@ -59,16 +59,15 @@ class CosineSimilaritys:
 
                     # 결과 저장
                     top_results.append({
-                        'genre': genre,  # 장르 추가
                         'genre_index': i + 1,
                         'id': self.remove_genre(names[i][index]),  # 실제 데이터 구조에 맞게 수정
-                        'similarity': float(similarity)
+                        'similarity': float(similarity),
+                        'genre': genre,  # 장르 추가
                     })
 
             # 가장 높은 유사도를 가진 항목 선택
             if top_results:
                 
-
                 # 상위 유사한 트랙 구성
                 similar_tracks = [
                     {
